@@ -1,1 +1,108 @@
-'use client'; import { createClient } from '@supabase/supabase-js'; import { useState, useEffect } from 'react'; // === PUT YOUR KEYS HERE === const supabaseUrl = 'https://itcypwhymlbbxjbdxblt.supabase.co'; const supabaseAnonKey = sb_publishable_JoLuw3BYPdojI0wZWr9zfQ_Nok393EK; // ← Replace this line with your sb_publishable_... key const supabase = createClient(supabaseUrl, supabaseAnonKey); export default function Home() { const [user, setUser] = useState<any>(null); const [email, setEmail] = useState(''); const [password, setPassword] = useState(''); const [loading, setLoading] = useState(false); const [message, setMessage] = useState(''); useEffect(() => { supabase.auth.getSession().then(({ data: { session } }) => { setUser(session?.user ?? null); }); }, []); const handleLogin = async (e: React.FormEvent) => { e.preventDefault(); setLoading(true); setMessage(''); const { error } = await supabase.auth.signInWithPassword({ email, password, }); if (error) { setMessage('Error: ' + error.message); } else { setMessage('✅ Login successful! Welcome to Fuerza Latina CRM'); window.location.reload(); } setLoading(false); }; const handleLogout = async () => { await supabase.auth.signOut(); setUser(null); window.location.reload(); }; if (user) { return ( <div style={{ padding: '40px', fontFamily: 'Arial, sans-serif', textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}> <h1>🌟 Fuerza Latina Insurance CRM</h1> <p>Welcome, <strong>{user.email}</strong></p> <p>You are logged in as <strong>Admin</strong></p> <div style={{ margin: '40px 0', padding: '20px', background: '#f0f0f0', borderRadius: '8px' }}> <h2>🚀 Your CRM is Ready</h2> <p>30+ Agents • 60+ Offices • 4 States</p> <p>IVANS Upload, Renewal Alerts, Client Management coming next</p> </div> <button onClick={handleLogout} style={{ marginTop: '30px', padding: '12px 24px', fontSize: '16px', background: '#ff4444', color: 'white', border: 'none', borderRadius: '6px' }} > Logout </button> </div> ); } return ( <div style={{ padding: '40px', maxWidth: '420px', margin: '0 auto', fontFamily: 'Arial, sans-serif' }}> <h1 style={{ textAlign: 'center' }}>Fuerza Latina Insurance</h1> <h2 style={{ textAlign: 'center' }}>CRM Login</h2> <form onSubmit={handleLogin} style={{ marginTop: '30px' }}> <input type="email" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} style={{ width: '100%', padding: '12px', marginBottom: '10px', fontSize: '16px', border: '1px solid #ccc', borderRadius: '4px' }} required /> <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} style={{ width: '100%', padding: '12px', marginBottom: '20px', fontSize: '16px', border: '1px solid #ccc', borderRadius: '4px' }} required /> <button type="submit" disabled={loading} style={{ width: '100%', padding: '14px', fontSize: '16px', background: '#0070f3', color: 'white', border: 'none', borderRadius: '6px' }} > {loading ? 'Logging in...' : 'Sign In'} </button> </form> {message && <p style={{ marginTop: '20px', color: message.includes('✅') ? 'green' : 'red', textAlign: 'center' }}>{message}</p>} <p style={{ textAlign: 'center', marginTop: '30px', fontSize: '14px' }}> Test login with:<br /> <strong>infoweb@fuerzalatinainsurance.com</strong> </p> </div> ); }
+ 'use client';
+
+import { createClient } from '@supabase/supabase-js';
+import { useState, useEffect } from 'react';
+
+const supabaseUrl = 'https://itcypwhymlbbxjbdxblt.supabase.co';
+
+// === YOUR REAL PUBLISHABLE KEY HERE (with quotes) ===
+const supabaseAnonKey = 'sb_publishable_JoLuw3BYPdojI0wZWr9zfQ_Nok393EK'; // ← Make sure it's inside quotes
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+export default function Home() {
+const [user, setUser] = useState<any>(null);
+const [email, setEmail] = useState('');
+const [password, setPassword] = useState('');
+const [loading, setLoading] = useState(false);
+const [message, setMessage] = useState('');
+
+useEffect(() => {
+supabase.auth.getSession().then(({ data: { session } }) => {
+setUser(session?.user ?? null);
+});
+}, []);
+
+const handleLogin = async (e: React.FormEvent) => {
+e.preventDefault();
+setLoading(true);
+setMessage('');
+
+const { error } = await supabase.auth.signInWithPassword({
+email,
+password,
+});
+
+if (error) {
+setMessage('Error: ' + error.message);
+} else {
+setMessage('✅ Login successful! Welcome to Fuerza Latina CRM');
+window.location.reload();
+}
+setLoading(false);
+};
+
+const handleLogout = async () => {
+await supabase.auth.signOut();
+setUser(null);
+window.location.reload();
+};
+
+if (user) {
+return (
+<div style={{ padding: '40px', fontFamily: 'Arial, sans-serif', textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
+<h1>🌟 Fuerza Latina Insurance CRM</h1>
+<p>Welcome, <strong>{user.email}</strong></p>
+<p>You are logged in as <strong>Admin</strong></p>
+<div style={{ margin: '40px 0', padding: '20px', background: '#f0f0f0', borderRadius: '8px' }}>
+<h2>🚀 Your CRM is Ready</h2>
+<p>60+ Agents • 60+ Offices • 4 States (GA, SC, TN, AL)</p>
+<p>IVANS Upload, Renewal Alerts, Client Management coming next</p>
+</div>
+<button
+onClick={handleLogout}
+style={{ marginTop: '30px', padding: '12px 24px', fontSize: '16px', background: '#ff4444', color: 'white', border: 'none', borderRadius: '6px' }}
+>
+Logout
+</button>
+</div>
+);
+}
+
+return (
+<div style={{ padding: '40px', maxWidth: '420px', margin: '0 auto', fontFamily: 'Arial, sans-serif' }}>
+<h1 style={{ textAlign: 'center' }}>Fuerza Latina Insurance</h1>
+<h2 style={{ textAlign: 'center' }}>CRM Login</h2>
+<form onSubmit={handleLogin} style={{ marginTop: '30px' }}>
+<input
+type="email"
+placeholder="Email address"
+value={email}
+onChange={(e) => setEmail(e.target.value)}
+style={{ width: '100%', padding: '12px', marginBottom: '10px', fontSize: '16px', border: '1px solid #ccc', borderRadius: '4px' }}
+required
+/>
+<input
+type="password"
+placeholder="Password"
+value={password}
+onChange={(e) => setPassword(e.target.value)}
+style={{ width: '100%', padding: '12px', marginBottom: '20px', fontSize: '16px', border: '1px solid #ccc', borderRadius: '4px' }}
+required
+/>
+<button
+type="submit"
+disabled={loading}
+style={{ width: '100%', padding: '14px', fontSize: '16px', background: '#0070f3', color: 'white', border: 'none', borderRadius: '6px', cursor: loading ? 'not-allowed' : 'pointer' }}
+>
+{loading ? 'Logging in...' : 'Sign In'}
+</button>
+</form>
+{message && <p style={{ marginTop: '20px', color: message.includes('✅') ? 'green' : 'red', textAlign: 'center' }}>{message}</p>}
+<p style={{ textAlign: 'center', marginTop: '30px', fontSize: '14px' }}>
+Test login with:<br />
+<strong>infoweb@fuerzalatinainsurance.com</strong>
+</p>
+</div>
+);
+}
