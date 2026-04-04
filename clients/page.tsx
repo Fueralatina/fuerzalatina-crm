@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = 'https://itcypwhymlbbxjbdxblt.supabase.co';
-const supabaseAnonKey = 'sb_publishable_JoLuw3BYPdojI0wZWr9zfQ_Nok393EK'; // ← replace with your real anon key if different
+const supabaseAnonKey = 'sb_publishable_JoLuw3BYPdojI0wZWr9zfQ_Nok393EK';
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
@@ -45,7 +45,14 @@ type="text"
 placeholder="Search by name, email or policy number..."
 value={search}
 onChange={(e) => setSearch(e.target.value)}
-style={{ width: '100%', padding: '12px', marginBottom: '20px', fontSize: '16px', border: '1px solid #ccc', borderRadius: '6px' }}
+style={{
+width: '100%',
+padding: '12px',
+marginBottom: '20px',
+fontSize: '16px',
+border: '1px solid #ccc',
+borderRadius: '6px'
+}}
 />
 
 {loading ? (
@@ -63,7 +70,11 @@ style={{ width: '100%', padding: '12px', marginBottom: '20px', fontSize: '16px',
 </thead>
 <tbody>
 {filteredClients.length === 0 ? (
-<tr><td colSpan={5} style={{ padding: '20px', textAlign: 'center' }}>No clients found yet. Add your first client below.</td></tr>
+<tr>
+<td colSpan={5} style={{ padding: '40px', textAlign: 'center', color: '#666' }}>
+No clients found yet.
+</td>
+</tr>
 ) : (
 filteredClients.map((client, index) => (
 <tr key={index} style={{ borderBottom: '1px solid #eee' }}>
@@ -81,10 +92,18 @@ filteredClients.map((client, index) => (
 
 <button
 onClick={() => window.location.href = '/'}
-style={{ marginTop: '30px', padding: '12px 24px', background: '#0070f3', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
+style={{
+marginTop: '30px',
+padding: '12px 24px',
+background: '#0070f3',
+color: 'white',
+border: 'none',
+borderRadius: '6px',
+cursor: 'pointer'
+}}
 >
 ← Back to Dashboard
 </button>
 </div>
 );
-}
+} 
